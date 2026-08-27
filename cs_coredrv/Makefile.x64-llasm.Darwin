@@ -1,0 +1,26 @@
+all: cs_coredrv
+
+llasm_asm_object_files := ../synth/llasm/CyberSyn.o ../synth/llasm/CLIB-asm.o ../synth/llasm/WinApi-advapi32-asm.o ../synth/llasm/WinApi-dsound-asm.o ../synth/llasm/WinApi-kernel32-asm.o ../synth/llasm/WinApi-winmm-asm.o ../synth/llasm/simd-asm.o ../synth/llasm/functions-asm.o
+llasm_asm_include_files := ../synth/llasm/llasm.llinc ../synth/llasm/llasm_divide.llinc ../synth/llasm/llasm_float.llinc ../synth/llasm/llasm_movs.llinc ../synth/llasm/llasm_pushx.llinc ../synth/llasm/llasm_scas.llinc ../synth/llasm/llasm_stos.llinc
+llasm_c_source_files := ../synth/memory32.c ../synth/simd.c ../synth/WinApi-advapi32.c ../synth/WinApi-dsound.c ../synth/WinApi-kernel32.c ../synth/WinApi-winmm.c ../synth/llasm/asm-cpu.c ../synth/llasm/CLIB-asm-llasm.c ../synth/llasm/functions-llasm.c ../synth/llasm/llasm_divide.c ../synth/llasm/llasm_float.c ../synth/llasm/llasm_movs.c ../synth/llasm/llasm_pushx.c ../synth/llasm/llasm_scas.c ../synth/llasm/llasm_stos.c
+llasm_c_include_files := ../synth/memory32.h ../synth/platform.h ../synth/ptr32.h ../synth/simd.h ../synth/simd_sse2.h ../synth/synth.h ../synth/WinApi-advapi32.h ../synth/WinApi-dsound.h ../synth/WinApi-kernel32.h ../synth/WinApi-winmm.h ../synth/llasm/CLIB-asm-llasm.h ../synth/llasm/llasm_cpu.h
+
+../synth/llasm/CyberSyn.o: ../synth/llasm/CyberSyn.llasm $(llasm_asm_include_files) ../synth/llasm/extern.llinc ../synth/llasm/macros.llinc ../synth/llasm/seg01_code.llinc ../synth/llasm/seg01_data.llinc ../synth/llasm/seg02_data.llinc ../synth/llasm/seg03_data.llinc ../synth/llasm/seg07_data.llinc
+../synth/llasm/CLIB-asm.o: ../synth/llasm/CLIB-asm.llasm $(llasm_asm_include_files) ../synth/llasm/asm-calls.llinc
+../synth/llasm/WinApi-advapi32-asm.o: ../synth/llasm/WinApi-advapi32-asm.llasm $(llasm_asm_include_files) ../synth/llasm/asm-calls.llinc
+../synth/llasm/WinApi-dsound-asm.o: ../synth/llasm/WinApi-dsound-asm.llasm $(llasm_asm_include_files) ../synth/llasm/asm-calls.llinc
+../synth/llasm/WinApi-kernel32-asm.o: ../synth/llasm/WinApi-kernel32-asm.llasm $(llasm_asm_include_files) ../synth/llasm/asm-calls.llinc
+../synth/llasm/WinApi-winmm-asm.o: ../synth/llasm/WinApi-winmm-asm.llasm $(llasm_asm_include_files) ../synth/llasm/asm-calls.llinc
+../synth/llasm/simd-asm.o: ../synth/llasm/simd-asm.llasm $(llasm_asm_include_files) ../synth/llasm/asm-calls.llinc
+../synth/llasm/functions-asm.o: ../synth/llasm/functions-asm.llasm $(llasm_asm_include_files)
+
+.SUFFIXES: .llasm .o
+.llasm.o:
+	llasm $< -O -m64 -inline-idiv -inline-float | opt -O3 | llc -O=3 -filetype=obj -mtriple=x86_64-apple-darwin > $@
+
+cs_coredrv: cs_coredrv.c $(llasm_c_source_files) $(llasm_c_include_files) $(llasm_asm_object_files)
+	$(CC) -m64 -x c++ -O2 -Wall -std=c++11 -fno-PIE -Wl,-pagezero_size,0x110000,-no_pie -o cs_coredrv cs_coredrv.c $(llasm_c_source_files) -x none $(llasm_asm_object_files) -I../synth -lm -framework CoreMIDI -framework CoreFoundation -framework AudioToolbox
+
+.PHONY: clean
+clean:
+	rm -f cs_coredrv $(llasm_asm_object_files)

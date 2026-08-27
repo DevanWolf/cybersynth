@@ -1,0 +1,242 @@
+;;
+;;  Copyright (C) 2026 Roman Pauer
+;;
+;;  Permission is hereby granted, free of charge, to any person obtaining a copy of
+;;  this software and associated documentation files (the "Software"), to deal in
+;;  the Software without restriction, including without limitation the rights to
+;;  use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+;;  of the Software, and to permit persons to whom the Software is furnished to do
+;;  so, subject to the following conditions:
+;;
+;;  The above copyright notice and this permission notice shall be included in all
+;;  copies or substantial portions of the Software.
+;;
+;;  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+;;  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+;;  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+;;  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+;;  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+;;  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;;  SOFTWARE.
+;;
+
+include llasm.llinc
+include asm-calls.llinc
+
+func CloseHandle_c *hObject
+func CreateDirectoryA_c *lpPathName, *lpSecurityAttributes
+funcp CreateFileA_c *lpFileName, dwDesiredAccess, dwShareMode, *lpSecurityAttributes, dwCreationDisposition, dwFlagsAndAttributes, *hTemplateFile
+funcp CreateSemaphoreA_c *lpSemaphoreAttributes, lInitialCount, lMaximumCount, *lpName
+funcp CreateThread_c *lpThreadAttributes, dwStackSize, *lpStartAddress, *lpParameter, dwCreationFlags, *lpThreadId
+func FindClose_c *hFindFile
+funcp FindFirstFileA_c *lpFileName, *lpFindFileData
+func FindNextFileA_c *hFindFile, *lpFindFileData
+func GetWindowsDirectoryA_c *lpBuffer, uSize
+funcp GlobalAlloc_c uFlags, dwBytes
+funcp GlobalFree_c *hMem
+func ReadFile_c *hFile, *lpBuffer, nNumberOfBytesToRead, *lpNumberOfBytesRead, *lpOverlapped
+func ReleaseSemaphore_c *hSemaphore, lReleaseCount, *lpPreviousCount
+func SetCurrentDirectoryA_c *lpPathName
+func SetFilePointer_c *hFile, lDistanceToMove, *lpDistanceToMoveHigh, dwMoveMethod
+func SetThreadPriority_c *hThread, nPriority
+func WaitForSingleObject_c *hHandle, dwMilliseconds
+
+proc CloseHandle_asm public
+
+; [esp +   4] = HANDLE hObject
+; [esp      ] = return address
+
+        Call_Asm_Stack1 CloseHandle_c, 1
+
+endp ; end procedure CloseHandle_asm
+
+
+proc CreateDirectoryA_asm public
+
+; [esp + 2*4] = LPSECURITY_ATTRIBUTES lpSecurityAttributes
+; [esp +   4] = LPCSTR lpPathName
+; [esp      ] = return address
+
+        Call_Asm_Stack2 CreateDirectoryA_c, 2
+
+endp ; end procedure CreateDirectoryA_asm
+
+
+proc CreateFileA_asm public
+
+; [esp + 7*4] = HANDLE hTemplateFile
+; [esp + 6*4] = DWORD dwFlagsAndAttributes
+; [esp + 5*4] = DWORD dwCreationDisposition
+; [esp + 4*4] = LPSECURITY_ATTRIBUTES lpSecurityAttributes
+; [esp + 3*4] = DWORD dwShareMode
+; [esp + 2*4] = DWORD dwDesiredAccess
+; [esp +   4] = LPCSTR lpFileName
+; [esp      ] = return address
+
+        Call_Asm_Stack7 CreateFileA_c, 7
+
+endp ; end procedure CreateFileA_asm
+
+
+proc CreateSemaphoreA_asm public
+
+; [esp + 4*4] = LPCSTR lpName
+; [esp + 3*4] = LONG lMaximumCount
+; [esp + 2*4] = LONG lInitialCount
+; [esp +   4] = LPSECURITY_ATTRIBUTES lpSemaphoreAttributes
+; [esp      ] = return address
+
+        Call_Asm_Stack4 CreateSemaphoreA_c, 4
+
+endp ; end procedure CreateSemaphoreA_asm
+
+
+proc CreateThread_asm public
+
+; [esp + 6*4] = LPDWORD lpThreadId
+; [esp + 5*4] = DWORD dwCreationFlags
+; [esp + 4*4] = LPVOID lpParameter
+; [esp + 3*4] = LPTHREAD_START_ROUTINE lpStartAddress
+; [esp + 2*4] = SIZE_T dwStackSize
+; [esp +   4] = LPSECURITY_ATTRIBUTES lpThreadAttributes
+; [esp      ] = return address
+
+        Call_Asm_Stack6 CreateThread_c, 6
+
+endp ; end procedure CreateThread_asm
+
+
+proc FindClose_asm public
+
+; [esp +   4] = HANDLE hFindFile
+; [esp      ] = return address
+
+        Call_Asm_Stack1 FindClose_c, 1
+
+endp ; end procedure FindClose_asm
+
+
+proc FindFirstFileA_asm public
+
+; [esp + 2*4] = LPWIN32_FIND_DATAA lpFindFileData
+; [esp +   4] = LPCSTR lpFileName
+; [esp      ] = return address
+
+        Call_Asm_Stack2 FindFirstFileA_c, 2
+
+endp ; end procedure FindFirstFileA_asm
+
+
+proc FindNextFileA_asm public
+
+; [esp + 2*4] = LPWIN32_FIND_DATAA lpFindFileData
+; [esp +   4] = HANDLE hFindFile
+; [esp      ] = return address
+
+        Call_Asm_Stack2 FindNextFileA_c, 2
+
+endp ; end procedure FindNextFileA_asm
+
+
+proc GetWindowsDirectoryA_asm public
+
+; [esp + 2*4] = UINT uSize
+; [esp +   4] = LPSTR lpBuffer
+; [esp      ] = return address
+
+        Call_Asm_Stack2 GetWindowsDirectoryA_c, 2
+
+endp ; end procedure GetWindowsDirectoryA_asm
+
+
+proc GlobalAlloc_asm public
+
+; [esp + 2*4] = SIZE_T dwBytes
+; [esp +   4] = UINT uFlags
+; [esp      ] = return address
+
+        Call_Asm_Stack2 GlobalAlloc_c, 2
+
+endp ; end procedure GlobalAlloc_asm
+
+
+proc GlobalFree_asm public
+
+; [esp +   4] = HGLOBAL hMem
+; [esp      ] = return address
+
+        Call_Asm_Stack1 GlobalFree_c, 1
+
+endp ; end procedure GlobalFree_asm
+
+
+proc ReadFile_asm public
+
+; [esp + 5*4] = LPOVERLAPPED lpOverlapped
+; [esp + 4*4] = LPDWORD lpNumberOfBytesRead
+; [esp + 3*4] = DWORD nNumberOfBytesToRead
+; [esp + 2*4] = LPVOID lpBuffer
+; [esp +   4] = HANDLE hFile
+; [esp      ] = return address
+
+        Call_Asm_Stack5 ReadFile_c, 5
+
+endp ; end procedure ReadFile_asm
+
+
+proc ReleaseSemaphore_asm public
+
+; [esp + 3*4] = LPLONG lpPreviousCount
+; [esp + 2*4] = LONG lReleaseCount
+; [esp +   4] = HANDLE hSemaphore
+; [esp      ] = return address
+
+        Call_Asm_Stack3 ReleaseSemaphore_c, 3
+
+endp ; end procedure ReleaseSemaphore_asm
+
+
+proc SetCurrentDirectoryA_asm public
+
+; [esp +   4] = LPCSTR lpPathName
+; [esp      ] = return address
+
+        Call_Asm_Stack1 SetCurrentDirectoryA_c, 1
+
+endp ; end procedure SetCurrentDirectoryA_asm
+
+
+proc SetFilePointer_asm public
+
+; [esp + 4*4] = DWORD dwMoveMethod
+; [esp + 3*4] = PLONG lpDistanceToMoveHigh
+; [esp + 2*4] = LONG lDistanceToMove
+; [esp +   4] = HANDLE hFile
+; [esp      ] = return address
+
+        Call_Asm_Stack4 SetFilePointer_c, 4
+
+endp ; end procedure SetFilePointer_asm
+
+
+proc SetThreadPriority_asm public
+
+; [esp + 2*4] = int nPriority
+; [esp +   4] = HANDLE hThread
+; [esp      ] = return address
+
+        Call_Asm_Stack2 SetThreadPriority_c, 2
+
+endp ; end procedure SetThreadPriority_asm
+
+
+proc WaitForSingleObject_asm public
+
+; [esp + 2*4] = DWORD dwMilliseconds
+; [esp +   4] = HANDLE hHandle
+; [esp      ] = return address
+
+        Call_Asm_Stack2 WaitForSingleObject_c, 2
+
+endp ; end procedure WaitForSingleObject_asm
+

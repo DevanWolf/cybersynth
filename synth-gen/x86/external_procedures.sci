@@ -1,0 +1,5 @@
+loc_1000C168,_ftol_asm
+loc_1000C532,_CIpow_asm
+loc_10015D54,EnlargedIntegerMultiply_asm
+loc_10015D8C,ExtendedLargeIntegerDivide_asm
+loc_10015EFC,LargeIntegerShiftRight_asm

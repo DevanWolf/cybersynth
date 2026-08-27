@@ -1,0 +1,96 @@
+;;
+;;  Copyright (C) 2026 Roman Pauer
+;;
+;;  Permission is hereby granted, free of charge, to any person obtaining a copy of
+;;  this software and associated documentation files (the "Software"), to deal in
+;;  the Software without restriction, including without limitation the rights to
+;;  use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+;;  of the Software, and to permit persons to whom the Software is furnished to do
+;;  so, subject to the following conditions:
+;;
+;;  The above copyright notice and this permission notice shall be included in all
+;;  copies or substantial portions of the Software.
+;;
+;;  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+;;  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+;;  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+;;  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+;;  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+;;  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;;  SOFTWARE.
+;;
+
+extern cs_volume_multiplier
+
+proc _ftol_asm external
+proc _CIpow_asm external
+proc EnlargedIntegerMultiply_asm external
+proc ExtendedLargeIntegerDivide_asm external
+proc LargeIntegerShiftRight_asm external
+
+proc simd_10007028_asm external
+proc simd_10007104_asm external
+proc simd_100071D0_asm external
+proc simd_1000720B_asm external
+proc simd_100072A3_asm external
+proc simd_1000732F_asm external
+proc simd_10007364_asm external
+proc simd_100073F1_asm external
+proc simd_10007472_asm external
+proc simd_10007491_asm external
+proc simd_100074CD_asm external
+proc simd_10007506_asm external
+proc simd_10007525_asm external
+proc simd_1000758D_asm external
+proc simd_100075CC_asm external
+proc simd_1000A920_asm external
+proc simd_1000AD02_asm external
+proc simd_1000B2EE_asm external
+proc simd_1000B7C9_asm external
+
+
+; advapi32.dll
+define RegCloseKey RegCloseKey_asm
+define RegCreateKeyExA RegCreateKeyExA_asm
+define RegQueryValueExA RegQueryValueExA_asm
+
+; dsound.dll
+define DirectSoundCreate DirectSoundCreate_asm
+
+; kernel32.dll
+define CloseHandle CloseHandle_asm
+define CreateDirectoryA CreateDirectoryA_asm
+define CreateFileA CreateFileA_asm
+define CreateSemaphoreA CreateSemaphoreA_asm
+define CreateThread CreateThread_asm
+define FindClose FindClose_asm
+define FindFirstFileA FindFirstFileA_asm
+define FindNextFileA FindNextFileA_asm
+define GetWindowsDirectoryA GetWindowsDirectoryA_asm
+define GlobalAlloc GlobalAlloc_asm
+define GlobalFree GlobalFree_asm
+define ReadFile ReadFile_asm
+define ReleaseSemaphore ReleaseSemaphore_asm
+define SetCurrentDirectoryA SetCurrentDirectoryA_asm
+define SetFilePointer SetFilePointer_asm
+define SetThreadPriority SetThreadPriority_asm
+define WaitForSingleObject WaitForSingleObject_asm
+
+; winmm.dll
+define timeBeginPeriod timeBeginPeriod_asm
+define timeEndPeriod timeEndPeriod_asm
+define timeGetDevCaps timeGetDevCaps_asm
+define timeGetTime timeGetTime_asm
+define timeKillEvent timeKillEvent_asm
+define timeSetEvent timeSetEvent_asm
+define waveOutClose waveOutClose_asm
+define waveOutGetDevCapsA waveOutGetDevCapsA_asm
+define waveOutGetErrorTextA waveOutGetErrorTextA_asm
+define waveOutGetNumDevs waveOutGetNumDevs_asm
+define waveOutGetVolume waveOutGetVolume_asm
+define waveOutOpen waveOutOpen_asm
+define waveOutPrepareHeader waveOutPrepareHeader_asm
+define waveOutReset waveOutReset_asm
+define waveOutUnprepareHeader waveOutUnprepareHeader_asm
+define waveOutWrite waveOutWrite_asm
+

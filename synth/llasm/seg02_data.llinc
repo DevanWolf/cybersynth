@@ -1,0 +1,115 @@
+dlabel loc_10019000
+db 51 dup 6
+db 227
+db 63
+dlabel loc_10019008
+db 0 dup 7
+db 64
+dlabel loc_10019010
+db 85 dup 6
+db 181
+db 63
+dlabel loc_10019018
+db 0 dup 6
+db 80
+db 65
+dlabel loc_10019020
+db 85 dup 7
+db 63
+dlabel loc_10019028
+db 0 dup 6
+db 240
+db 63
+dlabel loc_10019030
+db 72
+db 225
+db 122
+db 20
+db 174
+db 83
+db 112
+db 64
+dlabel loc_10019038
+db 0 dup 4
+db 192
+db 255
+db 223
+db 64
+dlabel loc_10019040
+db 0 dup 7
+db 63
+dlabel loc_10019048
+db 0 dup 6
+db 224
+db 64
+dlabel loc_10019050
+db 252
+db 169
+db 241
+db 210
+db 77
+db 98
+db 48
+db 63
+dlabel loc_10019058
+db 0 dup 6
+db 80
+db 63
+db 0 dup 8
+dlabel loc_10019068
+db 0 dup 6
+db 96
+db 64
+dlabel loc_10019070
+db 0 dup 4
+db 192
+db 255
+db 111
+db 64
+dlabel loc_10019D38
+db 0 dup 6
+db 224
+db 192
+dlabel loc_10019D40
+db 0 dup 4
+db 192
+db 255
+db 223
+db 64
+dlabel loc_10019D48
+db 0 dup 6
+db 240
+db 63
+db 67
+db 121
+db 98
+db 101
+db 114
+db 83
+db 121
+db 110
+db 116
+db 104
+db 32
+db 83
+db 111
+db 102
+db 116
+db 119
+db 97
+db 114
+db 101
+db 32
+db 83
+db 121
+db 110
+db 116
+db 104
+db 101
+db 115
+db 105
+db 122
+db 101
+db 114
+db 0
+dlabel loc_10019D70

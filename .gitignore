@@ -1,0 +1,16 @@
+*.exe
+*.EXE
+*.o
+*.obj
+*.OBJ
+**/cs_alsadrv/cs_alsadrv
+**/cs_coredrv/cs_coredrv
+**/cs_pcmconvert/cs_pcmconvert
+**/synth-gen/*.asm
+**/synth-gen/*.inc
+**/synth-gen/*.llasm
+**/synth-gen/*.llinc
+**/synth-gen/*.resdump
+**/synth-gen/*.def
+**/synth-gen/*.a
+**/synth-gen/*.sci

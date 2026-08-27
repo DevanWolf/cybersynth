@@ -1,0 +1,220 @@
+;;
+;;  Copyright (C) 2026 Roman Pauer
+;;
+;;  Permission is hereby granted, free of charge, to any person obtaining a copy of
+;;  this software and associated documentation files (the "Software"), to deal in
+;;  the Software without restriction, including without limitation the rights to
+;;  use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+;;  of the Software, and to permit persons to whom the Software is furnished to do
+;;  so, subject to the following conditions:
+;;
+;;  The above copyright notice and this permission notice shall be included in all
+;;  copies or substantial portions of the Software.
+;;
+;;  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+;;  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+;;  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+;;  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+;;  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+;;  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;;  SOFTWARE.
+;;
+
+include llasm.llinc
+include asm-calls.llinc
+
+func timeBeginPeriod_c uPeriod
+func timeEndPeriod_c uPeriod
+func timeGetDevCaps_c *ptc, cbtc
+func timeGetTime_c
+func timeKillEvent_c uTimerID
+func timeSetEvent_c uDelay, uResolution, *fptc, *dwUser, fuEvent
+func waveOutClose_c *hwo
+func waveOutGetDevCapsA_c *uDeviceID, *pwoc, cbwoc
+func waveOutGetErrorTextA_c mmrError, *pszText, cchText
+func waveOutGetNumDevs_c
+func waveOutGetVolume_c *hwo, *pdwVolume
+func waveOutOpen_c *phwo, uDeviceID, *pwfx, *dwCallback, *dwInstance, fdwOpen
+func waveOutPrepareHeader_c *hwo, *pwh, cbwh
+func waveOutReset_c *hwo
+func waveOutUnprepareHeader_c *hwo, *pwh, cbwh
+func waveOutWrite_c *hwo, *pwh, cbwh
+
+proc timeBeginPeriod_asm public
+
+; [esp +   4] = UINT uPeriod
+; [esp      ] = return address
+
+        Call_Asm_Stack1 timeBeginPeriod_c, 1
+
+endp ; end procedure timeBeginPeriod_asm
+
+
+proc timeEndPeriod_asm public
+
+; [esp +   4] = UINT uPeriod
+; [esp      ] = return address
+
+        Call_Asm_Stack1 timeEndPeriod_c, 1
+
+endp ; end procedure timeEndPeriod_asm
+
+
+proc timeGetDevCaps_asm public
+
+; [esp + 2*4] = UINT cbtc
+; [esp +   4] = LPTIMECAPS ptc
+; [esp      ] = return address
+
+        Call_Asm_Stack2 timeGetDevCaps_c, 2
+
+endp ; end procedure timeGetDevCaps_asm
+
+
+proc timeGetTime_asm public
+
+; [esp      ] = return address
+
+        Call_Asm_Stack0 timeGetTime_c, 0
+
+endp ; end procedure timeGetTime_asm
+
+
+proc timeKillEvent_asm public
+
+; [esp +   4] = UINT uTimerID
+; [esp      ] = return address
+
+        Call_Asm_Stack1 timeKillEvent_c, 1
+
+endp ; end procedure timeKillEvent_asm
+
+
+proc timeSetEvent_asm public
+
+; [esp + 5*4] = UINT fuEvent
+; [esp + 4*4] = DWORD_PTR dwUser
+; [esp + 3*4] = LPTIMECALLBACK fptc
+; [esp + 2*4] = UINT uResolution
+; [esp +   4] = UINT uDelay
+; [esp      ] = return address
+
+        Call_Asm_Stack5 timeSetEvent_c, 5
+
+endp ; end procedure timeSetEvent_asm
+
+
+proc waveOutClose_asm public
+
+; [esp +   4] = HWAVEOUT hwo
+; [esp      ] = return address
+
+        Call_Asm_Stack1 waveOutClose_c, 1
+
+endp ; end procedure waveOutClose_asm
+
+
+proc waveOutGetDevCapsA_asm public
+
+; [esp + 3*4] = UINT cbwoc
+; [esp + 2*4] = LPWAVEOUTCAPSA pwoc
+; [esp +   4] = UINT_PTR uDeviceID
+; [esp      ] = return address
+
+        Call_Asm_Stack3 waveOutGetDevCapsA_c, 3
+
+endp ; end procedure waveOutGetDevCapsA_asm
+
+
+proc waveOutGetErrorTextA_asm public
+
+; [esp + 3*4] = UINT cchText
+; [esp + 2*4] = LPSTR pszText
+; [esp +   4] = MMRESULT mmrError
+; [esp      ] = return address
+
+        Call_Asm_Stack3 waveOutGetErrorTextA_c, 3
+
+endp ; end procedure waveOutGetErrorTextA_asm
+
+
+proc waveOutGetNumDevs_asm public
+
+; [esp      ] = return address
+
+        Call_Asm_Stack0 waveOutGetNumDevs_c, 0
+
+endp ; end procedure waveOutGetNumDevs_asm
+
+
+proc waveOutGetVolume_asm public
+
+; [esp + 2*4] = LPDWORD pdwVolume
+; [esp +   4] = HWAVEOUT hwo
+; [esp      ] = return address
+
+        Call_Asm_Stack2 waveOutGetVolume_c, 2
+
+endp ; end procedure waveOutGetVolume_asm
+
+
+proc waveOutOpen_asm public
+
+; [esp + 6*4] = DWORD fdwOpen
+; [esp + 5*4] = DWORD_PTR dwInstance
+; [esp + 4*4] = DWORD_PTR dwCallback
+; [esp + 3*4] = LPCWAVEFORMATEX pwfx
+; [esp + 2*4] = UINT uDeviceID
+; [esp +   4] = LPHWAVEOUT phwo
+; [esp      ] = return address
+
+        Call_Asm_Stack6 waveOutOpen_c, 6
+
+endp ; end procedure waveOutOpen_asm
+
+
+proc waveOutPrepareHeader_asm public
+
+; [esp + 3*4] = UINT cbwh
+; [esp + 2*4] = LPWAVEHDR pwh
+; [esp +   4] = HWAVEOUT hwo
+; [esp      ] = return address
+
+        Call_Asm_Stack3 waveOutPrepareHeader_c, 3
+
+endp ; end procedure waveOutPrepareHeader_asm
+
+
+proc waveOutReset_asm public
+
+; [esp +   4] = HWAVEOUT hwo
+; [esp      ] = return address
+
+        Call_Asm_Stack1 waveOutReset_c, 1
+
+endp ; end procedure waveOutReset_asm
+
+
+proc waveOutUnprepareHeader_asm public
+
+; [esp + 3*4] = UINT cbwh
+; [esp + 2*4] = LPWAVEHDR pwh
+; [esp +   4] = HWAVEOUT hwo
+; [esp      ] = return address
+
+        Call_Asm_Stack3 waveOutUnprepareHeader_c, 3
+
+endp ; end procedure waveOutUnprepareHeader_asm
+
+
+proc waveOutWrite_asm public
+
+; [esp + 3*4] = UINT cbwh
+; [esp + 2*4] = LPWAVEHDR pwh
+; [esp +   4] = HWAVEOUT hwo
+; [esp      ] = return address
+
+        Call_Asm_Stack3 waveOutWrite_c, 3
+
+endp ; end procedure waveOutWrite_asm
+

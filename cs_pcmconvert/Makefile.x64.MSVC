@@ -1,0 +1,28 @@
+all: cs_pcmconvert.exe
+
+x64_asm_object_files = ..\synth\x64\CyberSyn.obj ..\synth\x64\CLIB-asm.obj ..\synth\x64\WinApi-advapi32-asm.obj ..\synth\x64\WinApi-dsound-asm.obj ..\synth\x64\WinApi-kernel32-asm.obj ..\synth\x64\WinApi-winmm-asm.obj ..\synth\x64\simd-asm.obj ..\synth\x64\functions-asm.obj
+x64_asm_include_files = ..\synth\x64\x64inc.inc ..\synth\x64\asm_call.inc ..\synth\x64\asm_pushx.inc ..\synth\x64\asm_unwind.inc
+x64_c_source_files = ..\synth\CLIB-asm-x86.c ..\synth\memory32.c ..\synth\simd.c ..\synth\WinApi-advapi32.c ..\synth\WinApi-dsound.c ..\synth\WinApi-kernel32.c ..\synth\WinApi-winmm.c ..\synth\x64\asm-cpu.c ..\synth\x64\functions-x64.c
+x64_c_include_files = ..\synth\CLIB-asm-x86.h ..\synth\memory32.h ..\synth\platform.h ..\synth\ptr32.h ..\synth\simd.h ..\synth\simd_sse2.h ..\synth\synth.h ..\synth\WinApi-advapi32.h ..\synth\WinApi-dsound.h ..\synth\WinApi-kernel32.h ..\synth\WinApi-winmm.h ..\synth\x64\x64_stack.h
+x64_c_object_files = CLIB-asm-x86.obj memory32.obj simd.obj WinApi-advapi32.obj WinApi-dsound.obj WinApi-kernel32.obj WinApi-winmm.obj asm-cpu.obj functions-x64.obj
+
+..\synth\x64\CyberSyn.obj: ..\synth\x64\CyberSyn.asm $(x64_asm_include_files) ..\synth\x64\misc.inc ..\synth\x64\extern.inc ..\synth\x64\seg01.inc ..\synth\x64\seg02.inc ..\synth\x64\seg03.inc ..\synth\x64\seg07.inc
+..\synth\x64\CLIB-asm.obj: ..\synth\x64\CLIB-asm.asm $(x64_asm_include_files) ..\synth\x64\asm-calls.inc
+..\synth\x64\WinApi-advapi32-asm.obj: ..\synth\x64\WinApi-advapi32-asm.asm $(x64_asm_include_files) ..\synth\x64\asm-calls.inc
+..\synth\x64\WinApi-dsound-asm.obj: ..\synth\x64\WinApi-dsound-asm.asm $(x64_asm_include_files) ..\synth\x64\asm-calls.inc
+..\synth\x64\WinApi-kernel32-asm.obj: ..\synth\x64\WinApi-kernel32-asm.asm $(x64_asm_include_files) ..\synth\x64\asm-calls.inc
+..\synth\x64\WinApi-winmm-asm.obj: ..\synth\x64\WinApi-winmm-asm.asm $(x64_asm_include_files) ..\synth\x64\asm-calls.inc
+..\synth\x64\simd-asm.obj: ..\synth\x64\simd-asm.asm $(x64_asm_include_files) ..\synth\x64\asm-calls.inc
+..\synth\x64\functions-asm.obj: ..\synth\x64\functions-asm.asm $(x64_asm_include_files)
+
+.SUFFIXES: .asm .obj
+.asm.obj:
+	nasm $< -fwin64 -Ox -i..\synth\x64\ -o$@
+
+cs_pcmconvert.exe: cs_pcmconvert.c midi_loader.c midi_loader.h $(x64_c_source_files) $(x64_c_include_files) $(x64_asm_object_files)
+	cl /c /TP /O2 /W3 /nologo cs_pcmconvert.c midi_loader.c $(x64_c_source_files) /I..\synth
+	link /NOLOGO /INCREMENTAL:NO /DEBUG:NONE /NXCOMPAT /TSAWARE /MACHINE:X64 /LARGEADDRESSAWARE /BASE:0x10000000 /DYNAMICBASE:NO /FIXED /HIGHENTROPYVA:NO /OUT:cs_pcmconvert.exe cs_pcmconvert.obj midi_loader.obj $(x64_c_object_files) $(x64_asm_object_files)
+
+.PHONY: clean
+clean:
+	del cs_pcmconvert.exe cs_pcmconvert.obj midi_loader.obj $(x64_c_object_files) $(x64_asm_object_files)

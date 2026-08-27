@@ -1,0 +1,28 @@
+all: cs_pcmconvert.exe
+
+llasm_asm_object_files = ..\synth\llasm\CyberSyn.obj ..\synth\llasm\CLIB-asm.obj ..\synth\llasm\WinApi-advapi32-asm.obj ..\synth\llasm\WinApi-dsound-asm.obj ..\synth\llasm\WinApi-kernel32-asm.obj ..\synth\llasm\WinApi-winmm-asm.obj ..\synth\llasm\simd-asm.obj ..\synth\llasm\functions-asm.obj
+llasm_asm_include_files = ..\synth\llasm\llasm.llinc ..\synth\llasm\llasm_divide.llinc ..\synth\llasm\llasm_float.llinc ..\synth\llasm\llasm_movs.llinc ..\synth\llasm\llasm_pushx.llinc ..\synth\llasm\llasm_scas.llinc ..\synth\llasm\llasm_stos.llinc
+llasm_c_source_files = ..\synth\memory32.c ..\synth\simd.c ..\synth\WinApi-advapi32.c ..\synth\WinApi-dsound.c ..\synth\WinApi-kernel32.c ..\synth\WinApi-winmm.c ..\synth\llasm\asm-cpu.c ..\synth\llasm\CLIB-asm-llasm.c ..\synth\llasm\functions-llasm.c ..\synth\llasm\llasm_divide.c ..\synth\llasm\llasm_float.c ..\synth\llasm\llasm_movs.c ..\synth\llasm\llasm_pushx.c ..\synth\llasm\llasm_scas.c ..\synth\llasm\llasm_stos.c
+llasm_c_include_files = ..\synth\memory32.h ..\synth\platform.h ..\synth\ptr32.h ..\synth\simd.h ..\synth\simd_sse2.h ..\synth\synth.h ..\synth\WinApi-advapi32.h ..\synth\WinApi-dsound.h ..\synth\WinApi-kernel32.h ..\synth\WinApi-winmm.h ..\synth\llasm\CLIB-asm-llasm.h ..\synth\llasm\llasm_cpu.h
+llasm_c_object_files = memory32.obj simd.obj WinApi-advapi32.obj WinApi-dsound.obj WinApi-kernel32.obj WinApi-winmm.obj asm-cpu.obj CLIB-asm-llasm.obj functions-llasm.obj llasm_divide.obj llasm_float.obj llasm_movs.obj llasm_pushx.obj llasm_scas.obj llasm_stos.obj
+
+..\synth\llasm\CyberSyn.obj: ..\synth\llasm\CyberSyn.llasm $(llasm_asm_include_files) ..\synth\llasm\extern.llinc ..\synth\llasm\macros.llinc ..\synth\llasm\seg01_code.llinc ..\synth\llasm\seg01_data.llinc ..\synth\llasm\seg02_data.llinc ..\synth\llasm\seg03_data.llinc ..\synth\llasm\seg07_data.llinc
+..\synth\llasm\CLIB-asm.obj: ..\synth\llasm\CLIB-asm.llasm $(llasm_asm_include_files) ..\synth\llasm\asm-calls.llinc
+..\synth\llasm\WinApi-advapi32-asm.obj: ..\synth\llasm\WinApi-advapi32-asm.llasm $(llasm_asm_include_files) ..\synth\llasm\asm-calls.llinc
+..\synth\llasm\WinApi-dsound-asm.obj: ..\synth\llasm\WinApi-dsound-asm.llasm $(llasm_asm_include_files) ..\synth\llasm\asm-calls.llinc
+..\synth\llasm\WinApi-kernel32-asm.obj: ..\synth\llasm\WinApi-kernel32-asm.llasm $(llasm_asm_include_files) ..\synth\llasm\asm-calls.llinc
+..\synth\llasm\WinApi-winmm-asm.obj: ..\synth\llasm\WinApi-winmm-asm.llasm $(llasm_asm_include_files) ..\synth\llasm\asm-calls.llinc
+..\synth\llasm\simd-asm.obj: ..\synth\llasm\simd-asm.llasm $(llasm_asm_include_files) ..\synth\llasm\asm-calls.llinc
+..\synth\llasm\functions-asm.obj: ..\synth\llasm\functions-asm.llasm $(llasm_asm_include_files)
+
+.SUFFIXES: .llasm .obj
+.llasm.obj:
+	llasm $< -O -m64 -inline-idiv -inline-float | opt -O3 | llc -O=3 -filetype=obj -mtriple=x86_64-pc-windows-msvc > $@
+
+cs_pcmconvert.exe: cs_pcmconvert.c midi_loader.c midi_loader.h $(llasm_c_source_files) $(llasm_c_include_files) $(llasm_asm_object_files)
+	cl /c /TP /O2 /W3 /nologo cs_pcmconvert.c midi_loader.c $(llasm_c_source_files) /I..\synth
+	link /NOLOGO /INCREMENTAL:NO /DEBUG:NONE /NXCOMPAT /TSAWARE /MACHINE:X64 /LARGEADDRESSAWARE /BASE:0x10000000 /DYNAMICBASE:NO /FIXED /HIGHENTROPYVA:NO /OUT:cs_pcmconvert.exe cs_pcmconvert.obj midi_loader.obj $(llasm_c_object_files) $(llasm_asm_object_files)
+
+.PHONY: clean
+clean:
+	del cs_pcmconvert.exe cs_pcmconvert.obj midi_loader.obj $(llasm_c_object_files) $(llasm_asm_object_files)

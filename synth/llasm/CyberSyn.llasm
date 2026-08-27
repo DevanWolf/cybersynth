@@ -1,0 +1,87 @@
+include llasm.llinc
+include extern.llinc
+include macros.llinc
+
+proc DirectSoundCreate external
+proc timeGetTime external
+proc waveOutGetErrorTextA external
+proc waveOutOpen external
+proc waveOutPrepareHeader external
+proc waveOutGetVolume external
+proc timeKillEvent external
+proc timeEndPeriod external
+proc timeGetDevCaps external
+proc timeBeginPeriod external
+proc timeSetEvent external
+proc waveOutWrite external
+proc waveOutReset external
+proc waveOutUnprepareHeader external
+proc waveOutClose external
+proc waveOutGetNumDevs external
+proc waveOutGetDevCapsA external
+proc WaitForSingleObject external
+proc ReleaseSemaphore external
+proc CreateThread external
+proc SetThreadPriority external
+proc CreateSemaphoreA external
+proc GlobalFree external
+proc GlobalAlloc external
+proc CloseHandle external
+proc CreateDirectoryA external
+proc SetCurrentDirectoryA external
+proc GetWindowsDirectoryA external
+proc FindClose external
+proc FindNextFileA external
+proc FindFirstFileA external
+proc ReadFile external
+proc CreateFileA external
+proc SetFilePointer external
+proc RegQueryValueExA external
+proc RegCreateKeyExA external
+proc RegCloseKey external
+
+datasegment .text constant
+dlabel imagebase1000
+include seg01_data.llinc
+endd
+
+datasegment .rdata constant
+include seg02_data.llinc
+endd
+
+datasegment .data
+include seg03_data.llinc
+endd
+
+datasegment .bss uninitialized
+include seg07_data.llinc
+endd
+
+define loc_10001000 SynthesizerActivate
+define loc_10001100 SynthesizerDeactivate
+define loc_10001140 SynthesizerPreload
+define loc_10001170 SynthesizerMidi
+define loc_100011A0 SynthesizerMidiLong
+define loc_10001280 SynthesizerPlayback
+define loc_100012A0 SynthesizerAllNotesOff
+define loc_100012C0 SynthesizerReset
+define loc_100012E0 SynthesizerControllersReset
+define loc_10001300 SynthesizerStatus
+define loc_100013A0 SynthesizerNumberOfBanks
+define loc_100013C0 SynthesizerBankIndexToNumber
+define loc_10001410 SynthesizerBankNumberToIndex
+define loc_10001480 SynthesizerBankName
+define loc_10001530 SynthesizerNumberOfPrograms
+define loc_100015B0 SynthesizerProgramName
+define loc_10001760 SynthesizerProgramNumberToIndex
+define loc_10001810 SynthesizerProgramIndexToNumber
+define loc_100018F0 SynthesizerSetMode
+define loc_10001970 SynthesizerPlayClick
+define loc_10001D80 ProcessEventsAndGenerateAudio
+define loc_10002510 SynthesizerGetDirectSound
+define loc_10002790 SynthesizerVolume
+define loc_100027C0 SynthesizerTrackVolume
+define loc_100027E0 SynthesizerPan
+define loc_10002810 SynthesizerTrackPan
+
+include seg01_code.llinc

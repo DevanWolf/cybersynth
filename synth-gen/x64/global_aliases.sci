@@ -1,0 +1,4 @@
+loc_10001D80,ProcessEventsAndGenerateAudio
+loc_1001B2B0,samples_per_call
+loc_1001B2B4,bytes_per_call
+loc_1001DC70,audio_data

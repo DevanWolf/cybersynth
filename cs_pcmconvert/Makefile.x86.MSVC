@@ -1,0 +1,26 @@
+all: cs_pcmconvert.exe
+
+x86_asm_object_files = ..\synth\x86\CyberSyn.obj ..\synth\x86\CLIB-asm.obj ..\synth\x86\WinApi-advapi32-asm.obj ..\synth\x86\WinApi-dsound-asm.obj ..\synth\x86\WinApi-kernel32-asm.obj ..\synth\x86\WinApi-winmm-asm.obj ..\synth\x86\functions-asm.obj
+x86_c_source_files = ..\synth\CLIB-asm-x86.c ..\synth\WinApi-advapi32.c ..\synth\WinApi-dsound.c ..\synth\WinApi-kernel32.c ..\synth\WinApi-winmm.c
+x86_c_include_files = ..\synth\CLIB-asm-x86.h ..\synth\memory32.h ..\synth\platform.h ..\synth\ptr32.h ..\synth\synth.h ..\synth\WinApi-advapi32.h ..\synth\WinApi-dsound.h ..\synth\WinApi-kernel32.h ..\synth\WinApi-winmm.h
+x86_c_object_files = CLIB-asm-x86.obj WinApi-advapi32.obj WinApi-dsound.obj WinApi-kernel32.obj WinApi-winmm.obj
+
+..\synth\x86\CyberSyn.obj: ..\synth\x86\CyberSyn.asm ..\synth\x86\x86inc.inc ..\synth\x86\misc.inc ..\synth\x86\extern.inc ..\synth\x86\seg01.inc ..\synth\x86\seg02.inc ..\synth\x86\seg03.inc ..\synth\x86\seg07.inc
+..\synth\x86\CLIB-asm.obj: ..\synth\x86\CLIB-asm.asm ..\synth\x86\asm-calls.inc
+..\synth\x86\WinApi-advapi32-asm.obj: ..\synth\x86\WinApi-advapi32-asm.asm ..\synth\x86\asm-calls.inc
+..\synth\x86\WinApi-dsound-asm.obj: ..\synth\x86\WinApi-dsound-asm.asm ..\synth\x86\asm-calls.inc
+..\synth\x86\WinApi-kernel32-asm.obj: ..\synth\x86\WinApi-kernel32-asm.asm ..\synth\x86\asm-calls.inc
+..\synth\x86\WinApi-winmm-asm.obj: ..\synth\x86\WinApi-winmm-asm.asm ..\synth\x86\asm-calls.inc
+..\synth\x86\functions-asm.obj: ..\synth\x86\functions-asm.asm
+
+.SUFFIXES: .asm .obj
+.asm.obj:
+	nasm $< -fwin32 -Ox -i..\synth\x86\ -o$@
+
+cs_pcmconvert.exe: cs_pcmconvert.c midi_loader.c midi_loader.h $(x86_c_source_files) $(x86_c_include_files) $(x86_asm_object_files)
+	cl /c /O2 /W3 /nologo cs_pcmconvert.c midi_loader.c $(x86_c_source_files) /I..\synth
+	link /NOLOGO /INCREMENTAL:NO /DEBUG:NONE /NXCOMPAT /TSAWARE /MACHINE:X86 /DYNAMICBASE:NO /FIXED /OUT:cs_pcmconvert.exe cs_pcmconvert.obj midi_loader.obj $(x86_c_object_files) $(x86_asm_object_files)
+
+.PHONY: clean
+clean:
+	del cs_pcmconvert.exe cs_pcmconvert.obj midi_loader.obj $(x86_c_object_files) $(x86_asm_object_files)

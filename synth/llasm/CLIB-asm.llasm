@@ -1,0 +1,119 @@
+;;
+;;  Copyright (C) 2019-2026 Roman Pauer
+;;
+;;  Permission is hereby granted, free of charge, to any person obtaining a copy of
+;;  this software and associated documentation files (the "Software"), to deal in
+;;  the Software without restriction, including without limitation the rights to
+;;  use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+;;  of the Software, and to permit persons to whom the Software is furnished to do
+;;  so, subject to the following conditions:
+;;
+;;  The above copyright notice and this permission notice shall be included in all
+;;  copies or substantial portions of the Software.
+;;
+;;  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+;;  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+;;  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+;;  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+;;  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+;;  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;;  SOFTWARE.
+;;
+
+include llasm.llinc
+include asm-calls.llinc
+
+func ExtendedLargeIntegerDivide_c *arg
+funcv LargeIntegerShiftRight_c *arg
+
+proc _CIpow_asm public
+
+; st1   = x
+; st0   = y
+; [esp] = return address
+
+        FPOWR_VOID
+
+        Call_Asm_Return 0
+
+endp ; end procedure _CIpow_asm
+
+
+proc _ftol_asm public
+
+; st0   = num
+; [esp] = return address
+
+        FTOL_INT64
+
+        load eax, tmp0, 4
+        add tmpadr, tmp0, 4
+        load edx, tmpadr, 4
+
+        Call_Asm_Return 0
+
+endp ; end procedure _ftol_asm
+
+
+proc EnlargedIntegerMultiply_asm public
+
+; [esp + 2*4] = LONG Multiplier
+; [esp +   4] = LONG Multiplicand
+; [esp] = return address
+
+        add tmpadr, esp, 4
+        load eax, tmpadr, 4
+        add tmpadr, esp, 2*4
+        load tmp1, tmpadr, 4
+        imul eax, edx, eax, tmp1
+
+        Call_Asm_Return 2
+
+endp ; end procedure EnlargedIntegerMultiply_asm
+
+
+proc ExtendedLargeIntegerDivide_asm public
+
+; [esp + 4*4] = ULONG *Remainder
+; [esp + 3*4] = ULONG Divisor
+; [esp +   4] = LARGE_INTEGER Dividend
+; [esp] = return address
+
+        add tmp0, esp, 4
+        call ExtendedLargeIntegerDivide_c tmp0
+
+        add tmp1, esp, 4
+        load eax, tmp1, 4
+        add tmp1, esp, 2*4
+        load edx, tmp1, 4
+
+        add tmp2, esp, 4*4
+        load tmp2, tmp2, 4
+
+        ifnz tmp2
+            store tmp0, tmp2, 4
+        endif
+
+        Call_Asm_Return 4
+
+endp ; end procedure ExtendedLargeIntegerDivide_asm
+
+
+proc LargeIntegerShiftRight_asm public
+
+; [esp + 3*4] = CCHAR  ShiftCount
+; [esp +   4] = LARGE_INTEGER LargeInteger
+; [esp] = return address
+
+        add tmp0, esp, 4
+        call LargeIntegerShiftRight_c tmp0
+
+        add tmp0, esp, 4
+        load eax, tmp0, 4
+        add tmp0, esp, 2*4
+        load edx, tmp0, 4
+
+        Call_Asm_Return 3
+
+endp ; end procedure LargeIntegerShiftRight_asm
+

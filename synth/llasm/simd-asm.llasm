@@ -1,0 +1,325 @@
+;;
+;;  Copyright (C) 2026 Roman Pauer
+;;
+;;  Permission is hereby granted, free of charge, to any person obtaining a copy of
+;;  this software and associated documentation files (the "Software"), to deal in
+;;  the Software without restriction, including without limitation the rights to
+;;  use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+;;  of the Software, and to permit persons to whom the Software is furnished to do
+;;  so, subject to the following conditions:
+;;
+;;  The above copyright notice and this permission notice shall be included in all
+;;  copies or substantial portions of the Software.
+;;
+;;  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+;;  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+;;  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+;;  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+;;  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+;;  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+;;  SOFTWARE.
+;;
+
+include llasm.llinc
+include asm-calls.llinc
+
+funcv simd_10007028_c *src, counter, mult1, mult2, mult3, mult4, mult5, *tmp, *dst1, *dst2, *dst3
+funcv simd_10007104_c *src, counter, mult1, mult2, mult3, mult4, mult5, *tmp, *dst1, *dst2, *dst3
+funcv simd_100071D0_c counter, *dst1, *dst2, *dst3
+funcv simd_1000720B_c *src, counter, mult1, mult2, mult3, *dst1, *dst2, *dst3
+funcv simd_100072A3_c *src, counter, mult1, mult2, mult3, *dst1, *dst2, *dst3
+funcv simd_1000732F_c counter, *dst1, *dst2, *dst3
+funcv simd_10007364_c *src, counter, mult1, mult2, mult3, *dst
+funcv simd_100073F1_c *src, counter, mult1, mult2, mult3, *dst
+funcv simd_10007472_c counter, *dst
+funcv simd_10007491_c *src, counter, mult, *dst
+funcv simd_100074CD_c *src, counter, mult, *dst
+funcv simd_10007506_c counter, *dst
+funcv simd_10007525_c counter1, multadd2, *dst, *src
+funcv simd_1000758D_c counter1, multadd2, *dst, *src
+funcv simd_100075CC_c counter, shift, *dst, *src
+funcv simd_1000A920_c counter1, *params1, *params2, *data1, *data2, *data3, *dst, *src
+funcv simd_1000AD02_c counter1, *params1, *params2, *data1, *data2, *data3, *dst, *src
+funcv simd_1000B2EE_c *params1, *params2, *data, *params3, *dst, *src
+funcv simd_1000B7C9_c *params1, *params2, *data, *params3, *dst, *src
+
+proc simd_10007028_asm public
+
+; [esp + 11*4] = uint8_t *dst3
+; [esp + 10*4] = uint8_t *dst2
+; [esp + 9*4] = uint8_t *dst1
+; [esp + 8*4] = uint8_t *tmp
+; [esp + 7*4] = uint32_t mult5
+; [esp + 6*4] = uint32_t mult4
+; [esp + 5*4] = uint32_t mult3
+; [esp + 4*4] = uint32_t mult2
+; [esp + 3*4] = uint32_t mult1
+; [esp + 2*4] = int32_t counter
+; [esp +   4] = uint8_t *src
+; [esp      ] = return address
+
+        Call_Asm_Stack11_void simd_10007028_c, 0
+
+endp ; end procedure simd_10007028_asm
+
+
+proc simd_10007104_asm public
+
+; [esp + 11*4] = uint8_t *dst3
+; [esp + 10*4] = uint8_t *dst2
+; [esp + 9*4] = uint8_t *dst1
+; [esp + 8*4] = uint8_t *tmp
+; [esp + 7*4] = uint32_t mult5
+; [esp + 6*4] = uint32_t mult4
+; [esp + 5*4] = uint32_t mult3
+; [esp + 4*4] = uint32_t mult2
+; [esp + 3*4] = uint32_t mult1
+; [esp + 2*4] = int32_t counter
+; [esp +   4] = uint8_t *src
+; [esp      ] = return address
+
+        Call_Asm_Stack11_void simd_10007104_c, 0
+
+endp ; end procedure simd_10007104_asm
+
+
+proc simd_100071D0_asm public
+
+; [esp + 4*4] = uint8_t *dst3
+; [esp + 3*4] = uint8_t *dst2
+; [esp + 2*4] = uint8_t *dst1
+; [esp +   4] = int32_t counter
+; [esp      ] = return address
+
+        Call_Asm_Stack4_void simd_100071D0_c, 0
+
+endp ; end procedure simd_100071D0_asm
+
+
+proc simd_1000720B_asm public
+
+; [esp + 8*4] = uint8_t *dst3
+; [esp + 7*4] = uint8_t *dst2
+; [esp + 6*4] = uint8_t *dst1
+; [esp + 5*4] = uint32_t mult3
+; [esp + 4*4] = uint32_t mult2
+; [esp + 3*4] = uint32_t mult1
+; [esp + 2*4] = int32_t counter
+; [esp +   4] = uint8_t *src
+; [esp      ] = return address
+
+        Call_Asm_Stack8_void simd_1000720B_c, 0
+
+endp ; end procedure simd_1000720B_asm
+
+
+proc simd_100072A3_asm public
+
+; [esp + 8*4] = uint8_t *dst3
+; [esp + 7*4] = uint8_t *dst2
+; [esp + 6*4] = uint8_t *dst1
+; [esp + 5*4] = uint32_t mult3
+; [esp + 4*4] = uint32_t mult2
+; [esp + 3*4] = uint32_t mult1
+; [esp + 2*4] = int32_t counter
+; [esp +   4] = uint8_t *src
+; [esp      ] = return address
+
+        Call_Asm_Stack8_void simd_100072A3_c, 0
+
+endp ; end procedure simd_100072A3_asm
+
+
+proc simd_1000732F_asm public
+
+; [esp + 4*4] = uint8_t *dst3
+; [esp + 3*4] = uint8_t *dst2
+; [esp + 2*4] = uint8_t *dst1
+; [esp +   4] = int32_t counter
+; [esp      ] = return address
+
+        Call_Asm_Stack4_void simd_1000732F_c, 0
+
+endp ; end procedure simd_1000732F_asm
+
+
+proc simd_10007364_asm public
+
+; [esp + 6*4] = uint8_t *dst
+; [esp + 5*4] = uint32_t mult3
+; [esp + 4*4] = uint32_t mult2
+; [esp + 3*4] = uint32_t mult1
+; [esp + 2*4] = int32_t counter
+; [esp +   4] = uint8_t *src
+; [esp      ] = return address
+
+        Call_Asm_Stack6_void simd_10007364_c, 0
+
+endp ; end procedure simd_10007364_asm
+
+
+proc simd_100073F1_asm public
+
+; [esp + 6*4] = uint8_t *dst
+; [esp + 5*4] = uint32_t mult3
+; [esp + 4*4] = uint32_t mult2
+; [esp + 3*4] = uint32_t mult1
+; [esp + 2*4] = int32_t counter
+; [esp +   4] = uint8_t *src
+; [esp      ] = return address
+
+        Call_Asm_Stack6_void simd_100073F1_c, 0
+
+endp ; end procedure simd_100073F1_asm
+
+
+proc simd_10007472_asm public
+
+; [esp + 2*4] = uint8_t *dst
+; [esp +   4] = int32_t counter
+; [esp      ] = return address
+
+        Call_Asm_Stack2_void simd_10007472_c, 0
+
+endp ; end procedure simd_10007472_asm
+
+
+proc simd_10007491_asm public
+
+; [esp + 4*4] = uint8_t *dst
+; [esp + 3*4] = uint32_t mult
+; [esp + 2*4] = int32_t counter
+; [esp +   4] = uint8_t *src
+; [esp      ] = return address
+
+        Call_Asm_Stack4_void simd_10007491_c, 0
+
+endp ; end procedure simd_10007491_asm
+
+
+proc simd_100074CD_asm public
+
+; [esp + 4*4] = uint8_t *dst
+; [esp + 3*4] = uint32_t mult
+; [esp + 2*4] = int32_t counter
+; [esp +   4] = uint8_t *src
+; [esp      ] = return address
+
+        Call_Asm_Stack4_void simd_100074CD_c, 0
+
+endp ; end procedure simd_100074CD_asm
+
+
+proc simd_10007506_asm public
+
+; [esp + 2*4] = uint8_t *dst
+; [esp +   4] = int32_t counter
+; [esp      ] = return address
+
+        Call_Asm_Stack2_void simd_10007506_c, 0
+
+endp ; end procedure simd_10007506_asm
+
+
+proc simd_10007525_asm public
+
+; [esp + 4*4] = uint8_t *src
+; [esp + 3*4] = uint8_t *dst
+; [esp + 2*4] = int32_t multadd2
+; [esp +   4] = int32_t counter1
+; [esp      ] = return address
+
+        Call_Asm_Stack4_void simd_10007525_c, 0
+
+endp ; end procedure simd_10007525_asm
+
+
+proc simd_1000758D_asm public
+
+; [esp + 4*4] = uint8_t *src
+; [esp + 3*4] = uint8_t *dst
+; [esp + 2*4] = int32_t multadd2
+; [esp +   4] = int32_t counter1
+; [esp      ] = return address
+
+        Call_Asm_Stack4_void simd_1000758D_c, 0
+
+endp ; end procedure simd_1000758D_asm
+
+
+proc simd_100075CC_asm public
+
+; [esp + 4*4] = uint8_t *src
+; [esp + 3*4] = uint8_t *dst
+; [esp + 2*4] = uint32_t shift
+; [esp +   4] = int32_t counter
+; [esp      ] = return address
+
+        Call_Asm_Stack4_void simd_100075CC_c, 0
+
+endp ; end procedure simd_100075CC_asm
+
+
+proc simd_1000A920_asm public
+
+; [esp + 8*4] = uint8_t *src
+; [esp + 7*4] = uint8_t *dst
+; [esp + 6*4] = uint32_t *data3
+; [esp + 5*4] = uint32_t *data2
+; [esp + 4*4] = uint16_t *data1
+; [esp + 3*4] = uint16_t *params2
+; [esp + 2*4] = int16_t *params1
+; [esp +   4] = int32_t counter1
+; [esp      ] = return address
+
+        Call_Asm_Stack8_void simd_1000A920_c, 0
+
+endp ; end procedure simd_1000A920_asm
+
+
+proc simd_1000AD02_asm public
+
+; [esp + 8*4] = uint8_t *src
+; [esp + 7*4] = uint8_t *dst
+; [esp + 6*4] = uint32_t *data3
+; [esp + 5*4] = uint32_t *data2
+; [esp + 4*4] = uint16_t *data1
+; [esp + 3*4] = uint16_t *params2
+; [esp + 2*4] = int16_t *params1
+; [esp +   4] = int32_t counter1
+; [esp      ] = return address
+
+        Call_Asm_Stack8_void simd_1000AD02_c, 0
+
+endp ; end procedure simd_1000AD02_asm
+
+
+proc simd_1000B2EE_asm public
+
+; [esp + 6*4] = uint8_t *src
+; [esp + 5*4] = uint8_t *dst
+; [esp + 4*4] = uint8_t *params3
+; [esp + 3*4] = uint16_t *data
+; [esp + 2*4] = uint8_t *params2
+; [esp +   4] = uint8_t *params1
+; [esp      ] = return address
+
+        Call_Asm_Stack6_void simd_1000B2EE_c, 0
+
+endp ; end procedure simd_1000B2EE_asm
+
+
+proc simd_1000B7C9_asm public
+
+; [esp + 6*4] = uint8_t *src
+; [esp + 5*4] = uint8_t *dst
+; [esp + 4*4] = uint8_t *params3
+; [esp + 3*4] = uint16_t *data
+; [esp + 2*4] = uint8_t *params2
+; [esp +   4] = uint8_t *params1
+; [esp      ] = return address
+
+        Call_Asm_Stack6_void simd_1000B7C9_c, 0
+
+endp ; end procedure simd_1000B7C9_asm
+

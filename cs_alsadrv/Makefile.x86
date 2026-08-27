@@ -1,0 +1,24 @@
+all: cs_alsadrv
+
+x86_asm_object_files := ../synth/x86/CyberSyn.o ../synth/x86/CLIB-asm.o ../synth/x86/WinApi-advapi32-asm.o ../synth/x86/WinApi-dsound-asm.o ../synth/x86/WinApi-kernel32-asm.o ../synth/x86/WinApi-winmm-asm.o ../synth/x86/functions-asm.o
+x86_c_source_files := ../synth/CLIB-asm-x86.c ../synth/WinApi-advapi32.c ../synth/WinApi-dsound.c ../synth/WinApi-kernel32.c ../synth/WinApi-winmm.c
+x86_c_include_files := ../synth/CLIB-asm-x86.h ../synth/memory32.h ../synth/platform.h ../synth/ptr32.h ../synth/synth.h ../synth/WinApi-advapi32.h ../synth/WinApi-dsound.h ../synth/WinApi-kernel32.h ../synth/WinApi-winmm.h
+
+../synth/x86/CyberSyn.o: ../synth/x86/CyberSyn.asm ../synth/x86/x86inc.inc ../synth/x86/misc.inc ../synth/x86/extern.inc ../synth/x86/seg01.inc ../synth/x86/seg02.inc ../synth/x86/seg03.inc ../synth/x86/seg07.inc
+../synth/x86/CLIB-asm.o: ../synth/x86/CLIB-asm.asm ../synth/x86/asm-calls.inc
+../synth/x86/WinApi-advapi32-asm.o: ../synth/x86/WinApi-advapi32-asm.asm ../synth/x86/asm-calls.inc
+../synth/x86/WinApi-dsound-asm.o: ../synth/x86/WinApi-dsound-asm.asm ../synth/x86/asm-calls.inc
+../synth/x86/WinApi-kernel32-asm.o: ../synth/x86/WinApi-kernel32-asm.asm ../synth/x86/asm-calls.inc
+../synth/x86/WinApi-winmm-asm.o: ../synth/x86/WinApi-winmm-asm.asm ../synth/x86/asm-calls.inc
+../synth/x86/functions-asm.o: ../synth/x86/functions-asm.asm
+
+.SUFFIXES: .asm .o
+.asm.o:
+	nasm $< -felf32 -Ox -i../synth/x86/ -o$@
+
+cs_alsadrv: cs_alsadrv.c $(x86_c_source_files) $(x86_c_include_files) $(x86_asm_object_files)
+	$(CC) -s -m32 -fno-PIE -O2 -Wall -no-pie -o cs_alsadrv cs_alsadrv.c $(x86_c_source_files) $(x86_asm_object_files) -I../synth -lm -lasound -lpthread
+
+.PHONY: clean
+clean:
+	rm -f cs_alsadrv $(x86_asm_object_files)
